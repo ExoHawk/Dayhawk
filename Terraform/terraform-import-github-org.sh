@@ -12,6 +12,16 @@ API_URL_PREFIX=${API_URL_PREFIX:-'https://api.github.com'}
 ## FUNCTIONS
 ###
 
+# Create organization. This is necessary
+create_github_orgs () {
+  cat >> "github-org.tf" << EOF
+    provider "github" {
+      organization = "${ORG}"
+      token = "${GITHUB_TOKEN}"
+  }
+EOF
+}
+
 # Public Repos
   # You can only list 100 items per page, so you can only clone 100 at a time.
   # This function uses the API to calculate how many pages of public repos you have.
@@ -290,6 +300,7 @@ done
 ###
 ## DO IT YO
 ###
+create_github_orgs
 import_public_repos
 import_private_repos
 import_users
